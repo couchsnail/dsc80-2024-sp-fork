@@ -102,10 +102,10 @@ def last_chars(fh):
 
 
 def add_root(A):
-    ...
+    return A + np.sqrt(np.arange(len(A)))
 
 def where_square(A):
-    ...
+    return A==np.sqrt(A**2)
 
 
 # ---------------------------------------------------------------------
@@ -114,7 +114,23 @@ def where_square(A):
 
 
 def filter_cutoff_loop(matrix, cutoff):
-    ...
+    result = []
+    valid_col = []
+    for i in range(len(matrix)):
+        sum = 0
+        for j in range(len(matrix[i])):
+            sum += matrix[i][j]
+        mean = sum / len(matrix)
+        if mean > cutoff:
+            valid_col.append(i)
+    
+    for v in valid_col:
+        current_row = []
+        for row in matrix:
+            current_row.append(row[v])
+        result.append(current_row)
+    
+    return np.array(result)
 
 
 # ---------------------------------------------------------------------
@@ -123,7 +139,8 @@ def filter_cutoff_loop(matrix, cutoff):
 
 
 def filter_cutoff_np(matrix, cutoff):
-    ...
+    valid = np.mean(matrix,axis=0)>cutoff
+    return matrix[:,valid]
 
 
 # ---------------------------------------------------------------------
