@@ -30,7 +30,22 @@ def consecutive_ints(ints):
 
 
 def median_vs_mean(nums):
-    ...
+    sorted_list = sorted(nums)
+    sorted_len = len(sorted_list)
+    
+    if sorted_len%2==0:
+        median = (sorted_list[sorted_len//2]+sorted_list[sorted_len//2-1])//2
+    else:
+        median = sorted_list[sorted_len//2]
+
+    sum = 0
+    for i in nums:
+        sum += i
+    
+    if median <= sum/sorted_len:
+        return True
+    else:
+        return False
 
 
 # ---------------------------------------------------------------------
