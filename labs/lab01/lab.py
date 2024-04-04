@@ -54,7 +54,10 @@ def median_vs_mean(nums):
 
 
 def n_prefixes(s, n):
-    ...
+    result = ''
+    for i in range(n, 0, -1):
+        result += s[:i]
+    return result
 
 
 # ---------------------------------------------------------------------
@@ -63,7 +66,22 @@ def n_prefixes(s, n):
 
 
 def exploded_numbers(ints, n):
-    ...
+    result = []
+    for i in ints:
+        current = ''
+        index = n
+        while index > 0:
+            cur_int = str(i - (index))
+            current += cur_int.zfill(n) + " "
+            index -= 1
+        current += str(i).zfill(n) + " "
+        index = 1
+        while index <= n:
+            cur_int = str(i + (index))
+            current += cur_int.zfill(n) + " "
+            index += 1
+        result.append(current[:-1])
+    return result
 
 
 # ---------------------------------------------------------------------
@@ -72,7 +90,10 @@ def exploded_numbers(ints, n):
 
 
 def last_chars(fh):
-    ...
+    result = str()
+    for line in fh:
+        result += line.strip()[-1]
+    return result
 
 
 # ---------------------------------------------------------------------
