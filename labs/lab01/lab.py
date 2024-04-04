@@ -149,7 +149,7 @@ def filter_cutoff_np(matrix, cutoff):
 
 
 def growth_rates(A):
-    ...
+    return np.round(np.diff(A)/A[:-1],2)
 
 def with_leftover(A):
     ...
