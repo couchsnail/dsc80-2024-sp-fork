@@ -162,7 +162,36 @@ def with_leftover(A):
 
 
 def salary_stats(salary):
-    ...
+    req_values = []
+    indexes = np.array(['num_players','num_teams', 'total_salary', 'highest_salary', 'avg_los', 'fifth_lowest', 'duplicates', 'total_highest'])
+    #Number of players
+    req_values.append(salary.shape[0])
+    #Number of Teams
+    req_values.append(salary.groupby(by='Team').count().shape[0])
+    #Total salary amount for all players
+    req_values.append(salary['Salary'].sum())
+    #Name of the player with the highest salary
+    req_values.append(salary.sort_values(by='Salary',ascending=False)['Player'][0])
+    #Average salary of 'Los Angeles Lakers', rounded to 2 decimal players
+    lakers = salary[salary['Team']=='Los Angeles Lakers']
+    req_values.append(np.round(np.mean(lakers['Salary']),2))
+    #Name and team of the player who has the fifth lowest salary, separated by a comma and a space
+    fifth_player = salary.sort_values(by='Salary',ascending=True)['Player'][4] + ', ' + salary.sort_values(by='Salary',ascending=False)['Team'][4]
+    req_values.append(fifth_player)
+    #Boolean that is True if there any duplicate last names and False otherwise
+    def getLastName(name):
+        first_space = name.index(' ')
+        if first_space!=name.rindex(' '):
+            second_space = name.rindex(' ')
+            return name[first_space+1:second_space]
+        else:
+            return name[first_space+1:]
+    names = salary['Player'].apply(getLastName).duplicated()
+    req_values.append(bool(True in names))
+    #Total salary of team with highest paid player
+    highest_team = salary.sort_values(by='Salary',ascending=False)['Team'][0]
+    req_values.append(salary[salary['Team']==(highest_team)]['Salary'].sum())
+    return pd.Series(req_values, indexes)
 
 
 # ---------------------------------------------------------------------
