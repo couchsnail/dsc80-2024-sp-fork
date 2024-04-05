@@ -152,7 +152,8 @@ def growth_rates(A):
     return np.round(np.diff(A)/A[:-1],2)
 
 def with_leftover(A):
-    ...
+    differences = np.cumsum(20 % A)>=A
+    return np.where(differences==True)[0][0]
 
 
 # ---------------------------------------------------------------------
