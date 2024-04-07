@@ -200,4 +200,43 @@ def salary_stats(salary):
 
 
 def parse_malformed(fp):
-    ...
+     with open(fp, 'r') as file:
+        content = file.readlines()
+        final_result = []
+        for i in range(len(content)):
+            if i==0:
+                continue
+            result = ''
+            current = content[i].strip().split(',')
+            #Removes all extra ',' in list
+            while '' in current:
+                current.remove('')
+            #Fixes formatting of first value
+            if current[0].count('"')!=0:
+                quote_index = current[0].find('"')
+                current[0] = current[0][:quote_index]+current[0][quote_index+1:]
+            #Fixes formatting of second value
+            if current[1].count('"')!=0:
+                quote_index = current[1].find('"')
+                current[1] = current[1][:quote_index]+current[1][quote_index+1:]
+            #Fixes formatting of third value
+            if current[2].count('"')!=0:
+                quote_index = current[2].find('"')
+                current[2] = current[2][:quote_index]+current[2][quote_index+1:]
+            #Fixes formatting of fourth value
+            if current[3].count('"')!=0:
+                quote_index = current[3].find('"')
+                current[3] = current[3][:quote_index]+current[3][quote_index+1:]
+            #Fixes formatting of final values
+            new_val = current[4] + ',' + current[5]
+            result = current[:4]
+            result.append(new_val)
+            final_result.append(result)
+    
+        cols = ['first', 'last', 'weight', 'height', 'geo']
+        df = pd.DataFrame(final_result,columns=cols)
+        df['height']=df['height'].astype('float')
+        df['weight']=df['weight'].astype('float')
+        df['geo']=df['geo'].astype(str)
+        df['geo']=df['geo'].apply(lambda val: val.replace('"',''))
+        return df
